@@ -55,6 +55,10 @@ class smoothDriver {
     double kD = 0;
     double driveThreshold = 200;
 
+    double localkP = 0;
+    double localkI = 0;
+    double localkD = 0;
+
 
     double turnkP = 0;
     double turnkI = 0;
@@ -65,6 +69,7 @@ class smoothDriver {
     void setTurnPower(double pow);
 
     int curveDrive(int inputVal);
+
 
     double posX;
     double posY;
