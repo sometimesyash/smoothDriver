@@ -72,6 +72,7 @@ class smoothDriver {
     double kCurve = 0.1;
     double aCurve = 0.4;
     double longTime = 5000;
+    bool inertialIn = true;
 
     
 

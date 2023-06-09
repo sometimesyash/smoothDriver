@@ -221,6 +221,7 @@ void smoothDriver::resetDrive(){
     if(m_imu.get_heading() == PROS_ERR_F){
 
         master.print(1, 1, "IMU Not Connected");
+        inertialIn = false;
 
     } else {
 
@@ -228,7 +229,9 @@ void smoothDriver::resetDrive(){
 
         while(m_imu.is_calibrating()){
             master.print(1, 1, "SmoothDriver Calibrating");
+            inertialIn = true;
         }
+
         master.print(1, 1, "Ready To Drive");
     }
     
@@ -320,6 +323,11 @@ void smoothDriver::turn(int targetAng, double speedMax){
     bool runTurnPID = true;
     int counter = 0;
     double timecount = 0;
+
+    if(inertialIn == false){
+        runPID = false;
+        master.print(1, 1, "IMU Not Connected");
+    }
 
     while(runTurnPID){
 
