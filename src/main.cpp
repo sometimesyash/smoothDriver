@@ -42,10 +42,9 @@ void competition_initialize() {}
 void opcontrol() {
 
     pros::Controller master(pros::E_CONTROLLER_MASTER);
-	smoothDriver.setTurnPID(2.5, 0, 4.4);
+    smoothDriver.runPIDTune(0.05);
 
-    smoothDriver.turn(90, 127);
-
+    pros::delay(2000);
     
     pros::delay(500);
 

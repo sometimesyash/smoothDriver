@@ -193,7 +193,7 @@ void smoothDriver::runPIDTune(double stepCount){
 
     kTu = oscillationCount * timeOf/ 1000.0;
     tI = (0.5 * tP) / kTu;
-    tD = (0.125 * kP) * kTu;
+    tD = (0.125 * tP) * kTu;
 
 
     
