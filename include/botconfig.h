@@ -9,11 +9,11 @@ class smoothDriver {
         smoothDriver(int inertialPort, pros::Motor& leftBack, pros::Motor& rightBack, pros::Motor& leftFront, pros::Motor& rightFront);
 
         void drive(double pointX, double pointY, double speedMax);
-        void driveDist(double distance, double speedMax);
+        void driveDist(double distance, double speedMax, double P);
 
         void turnToFace(double pointX, double pointY, double speedMax);
 
-        void turn(int targetAng, double speedMax);
+        void turn(int targetAng, double speedMax, double p);
 
 
         void straightTune();

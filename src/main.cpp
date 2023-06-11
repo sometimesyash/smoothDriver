@@ -2,6 +2,7 @@
 #include "main.h"
 #include <cmath>
 #include "botConfig.h"
+
 #include "pros/motors.hpp"
 
 
@@ -43,7 +44,9 @@ void opcontrol() {
 
     pros::Controller master(pros::E_CONTROLLER_MASTER);
     
-     
+    smoothDriver.runPIDTune(0.05);
+
+    smoothDriver.driveDist(2000, 110, 0.05);     
 
     
     pros::delay(500);
