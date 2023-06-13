@@ -80,6 +80,7 @@ class smoothDriver {
     double aCurve = 0.4;
     double longTime = 5000;
     bool inertialIn = true;
+    bool runMap = true;
 
     
 
