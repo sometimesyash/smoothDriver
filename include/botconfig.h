@@ -70,6 +70,8 @@ class smoothDriver {
 
     int curveDrive(int inputVal);
 
+    void map(void* ignore);
+
 
     double posX;
     double posY;
