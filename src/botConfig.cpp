@@ -118,6 +118,7 @@ void smoothDriver::resetDrive(){
         }
 
         master.print(1, 1, "Ready To Drive");
+        pros::Task mapping(smoothDriver::mapperWrapper);
     }
     
 }

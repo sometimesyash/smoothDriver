@@ -37,6 +37,8 @@ class smoothDriver {
         void runPIDTune(double stepCount);
         void runPIDTurnTune(double stepCount);
         
+        static void mapperWrapper(void* param);
+        void map();
 
 
 
@@ -70,7 +72,7 @@ class smoothDriver {
 
     int curveDrive(int inputVal);
 
-    void map(void* ignore);
+    
 
 
     double posX;
