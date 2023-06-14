@@ -30,6 +30,7 @@ class smoothDriver {
 
         void setKcurve(double newK);
         void setAcurve(double newA);
+        void enableBraking(double breakP, double breakD, pros::controller_digital_e_t button);
         void startDriver();
         double returnPos();
 
@@ -67,22 +68,28 @@ class smoothDriver {
     double turnkD = 0;
     double turnThreshold = 2;
 
+    double brakeP = 0;
+    double brakeD = 0;
+
     void setPower(double pow);
     void setTurnPower(double pow);
 
     int curveDrive(int inputVal);
 
-    
+    void brake(double in1, double in2);
 
 
     double posX;
     double posY;
+    pros::controller_digital_e_t brakeButton = pros::E_CONTROLLER_DIGITAL_Y;
 
     double kCurve = 0.1;
     double aCurve = 0.4;
+    bool braking = false;
     double longTime = 5000;
     bool inertialIn = true;
     bool runMap = true;
+    bool curBreak = false;
 
     
 
