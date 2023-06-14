@@ -70,6 +70,10 @@ class smoothDriver {
 
     double brakeP = 0;
     double brakeD = 0;
+    double brakePrevL = 0;
+    double brakePrevR = 0;
+    double targetBrakeL = 0;
+    double targetBrakeR = 0;
 
     void setPower(double pow);
     void setTurnPower(double pow);
@@ -90,6 +94,7 @@ class smoothDriver {
     bool inertialIn = true;
     bool runMap = true;
     bool curBreak = false;
+    double resetBrakes = true;
 
     
 
