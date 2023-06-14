@@ -114,8 +114,8 @@ void smoothDriver::brake(double in1, double in2){
     m_rightMotorGroup.set_brake_modes(pros::E_MOTOR_BRAKE_BRAKE);
     
 
-    targetL = targetBrakeL;
-    targetR = targetBrakeR;
+    double targetL = targetBrakeL;
+    double targetR = targetBrakeR;
 
     double currL = m_leftMotorGroup[0].get_position();
     double currR = m_rightMotorGroup[0].get_position();
