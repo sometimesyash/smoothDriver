@@ -33,6 +33,8 @@ void smoothDriver::map(){
         
         lastDistL = leftEnc;
         lastDistR = rightEnc;
+
+        
         posX += avg * cos(theta);
         posY = avg * sin(theta);
     }

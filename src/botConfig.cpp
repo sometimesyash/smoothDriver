@@ -64,15 +64,21 @@ void smoothDriver::startDriver(){
             m_leftMotorGroup.move(0);
         }
 
-        if(master.get_digital(brakeButton) && braking){
-            curBreak = true;
-            double leftSide = m_leftMotorGroup[0].get_position();
-            double rightSide = m_rightMotorGroup[0].get_position;
+        if(braking){
+            if(master.get_digital(brakeButton)){
+                curBreak = true;
+                double leftSide = m_leftMotorGroup[0].get_position();
+                double rightSide = m_rightMotorGroup[0].get_position();
 
-            brake(leftSide, rightSide);
-        } else { 
-            curBreak = false; 
+
+                brake(leftSide, rightSide);
+                resetBrakes = false;
+            } else { 
+                curBreak = false;
+                resetBrakes = true; 
+            }
         }
+        
 
 }
 
@@ -97,6 +103,48 @@ void smoothDriver::drive(double pointX, double pointY, double speedMax){
 }
 
 void smoothDriver::brake(double in1, double in2){
+    
+    if(resetBrakes){
+        
+        targetBrakeL = in1;
+        targetBrakeR = in2;
+    }
+
+    m_leftMotorGroup.set_brake_modes(pros::E_MOTOR_BRAKE_BRAKE);
+    m_rightMotorGroup.set_brake_modes(pros::E_MOTOR_BRAKE_BRAKE);
+    
+
+    targetL = targetBrakeL;
+    targetR = targetBrakeR;
+
+    double currL = m_leftMotorGroup[0].get_position();
+    double currR = m_rightMotorGroup[0].get_position();
+
+    double errorL = targetL - currL;
+    double errorR = targetR - currR;
+
+    double devL = errorL - brakePrevL;
+    double devR = errorR - brakePrevR;
+
+    double finalLeftPow = (brakeP * errorL) + (brakeD * devL);
+    double finalRightPow = (brakeP * errorL) + (brakeD * devR);
+
+    if(errorL > 50 || errorL < -50){
+        m_leftMotorGroup.move(finalLeftPow);
+    } else {
+        m_leftMotorGroup.move(0);
+    }
+
+    if(errorR > 50 || errorR < -50){
+        m_rightMotorGroup.move(finalRightPow);
+    } else {
+        m_rightMotorGroup.move(0);
+    }
+
+    brakePrevL = errorL;
+    brakePrevR = errorR;
+    m_leftMotorGroup.set_brake_modes(pros::E_MOTOR_BRAKE_COAST);
+    m_rightMotorGroup.set_brake_modes(pros::E_MOTOR_BRAKE_COAST);
     
 }
 
