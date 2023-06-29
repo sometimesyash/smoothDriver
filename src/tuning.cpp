@@ -108,6 +108,8 @@ void smoothDriver::runPIDTune(double stepCount){
     tI = (0.5 * tP) / kTu;
     tD = (0.125 * tP) * kTu;
 
+
+
     
 
 
@@ -154,7 +156,7 @@ void smoothDriver::runPIDTurnTune(double stepCount){
     int timeTurn = 0;
     double finalTurnPow = 0;
 
-    master.print(1, 1, "Turn Test");
+
 
     while(keepTurning){
 

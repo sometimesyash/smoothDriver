@@ -5,6 +5,74 @@
 
 
 
+
+void smoothDriver::driveAltDist(double distance, double speedMax){
+
+
+    double previousError = 0.0;
+    double error = 0.0;
+    double integral = 0.0;
+
+
+    bool runPID = true;
+    int counter = 0;
+    double timecount = 0;
+
+    m_leftMotorGroup.tare_position();
+    m_rightMotorGroup.tare_position();
+
+
+
+    while(runPID){
+
+
+        double curr = m_leftMotorGroup.get_positions()[0] + m_rightMotorGroup.get_positions()[0];
+
+        error = distance - curr;
+
+        double prop = kP * error;
+        integral = integral + kI * error;
+        double derivative = kD * (error - previousError);
+
+        double finalPow = prop + integral + derivative;
+
+        if(finalPow > speedMax){
+            finalPow = speedMax;
+        } else if(finalPow < -speedMax){
+            finalPow = -speedMax;
+        }
+
+        
+
+        setPower(finalPow);
+        previousError = error;
+
+        if(std::abs(error) < driveThreshold){
+            counter += 50;
+        } else {
+            counter = 0;
+        }
+
+        if(counter >= 200 || timecount >= longTime){
+            runPID = false;
+        }
+
+        timecount+= 50;
+
+
+
+
+        pros::delay(50);
+
+    }
+
+    setPower(0);
+
+
+
+}
+
+
 void smoothDriver::driveDist(double distance, double speedMax, double P){
 
 

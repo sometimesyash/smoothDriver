@@ -35,7 +35,10 @@ void initialize() {
 
 void disabled() {}
 
-void autonomous() {}
+void autonomous() {
+
+    smoothDriver.runPIDTune(0.05);
+}
 
 
 void competition_initialize() {}
@@ -43,10 +46,12 @@ void competition_initialize() {}
 void opcontrol() {
 
     pros::Controller master(pros::E_CONTROLLER_MASTER);
-    
-    smoothDriver.runPIDTune(0.05);
 
-    smoothDriver.driveDist(2000, 110, 0.05);     
+    smoothDriver.enableBraking(0.5, 0.5, pros::E_CONTROLLER_DIGITAL_A);
+    
+    while(true){
+        smoothDriver.startDriver();
+    }
 
     
     pros::delay(500);

@@ -10,6 +10,8 @@ class smoothDriver {
 
         void drive(double pointX, double pointY, double speedMax);
         void driveDist(double distance, double speedMax, double P);
+        void driveAltDist(double distance, double speedMax);
+
 
         void turnToFace(double pointX, double pointY, double speedMax);
 
@@ -81,7 +83,7 @@ class smoothDriver {
     int curveDrive(int inputVal);
 
     void brake(double in1, double in2);
-
+    
 
     double posX;
     double posY;
