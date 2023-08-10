@@ -2,11 +2,10 @@
 #include "pros/misc.h"
 #include <cmath>
 
+//Control Algorithms for Autonomous Control
 
 
-
-
-void smoothDriver::driveAltDist(double distance, double speedMax){
+void smoothDriver::driveDist(double distance, double speedMax){
 
 
     double previousError = 0.0;
@@ -73,7 +72,7 @@ void smoothDriver::driveAltDist(double distance, double speedMax){
 }
 
 
-void smoothDriver::driveDist(double distance, double speedMax, double P){
+void smoothDriver::driveAltDist(double distance, double speedMax, double P){
 
 
     double previousError = 0.0;

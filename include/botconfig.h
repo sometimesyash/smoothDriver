@@ -9,8 +9,8 @@ class smoothDriver {
         smoothDriver(int inertialPort, pros::Motor& leftBack, pros::Motor& rightBack, pros::Motor& leftFront, pros::Motor& rightFront);
 
         void drive(double pointX, double pointY, double speedMax);
-        void driveDist(double distance, double speedMax, double P);
-        void driveAltDist(double distance, double speedMax);
+        void driveDist(double distance, double speedMax);
+        void driveAltDist(double distance, double speedMax, double P);
 
 
         void turnToFace(double pointX, double pointY, double speedMax);
@@ -42,6 +42,8 @@ class smoothDriver {
         
         static void mapperWrapper(void* param);
         void map();
+
+        void setChangeVal(double cP, double cI, double cD);
 
 
 
@@ -97,6 +99,10 @@ class smoothDriver {
     bool runMap = true;
     bool curBreak = false;
     double resetBrakes = true;
+
+    double changeP = 0.01;
+    double changeI = 0.01;
+    double changeD = 0.01;
 
     
 

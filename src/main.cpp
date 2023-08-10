@@ -37,7 +37,12 @@ void disabled() {}
 
 void autonomous() {
 
-    smoothDriver.runPIDTune(0.05);
+    smoothDriver.runPIDTune(0.1);
+    pros::delay(500);
+    smoothDriver.driveDist(1000, 80);
+
+   /* pros::delay(1000);
+    smoothDriver.driveAltDist(500, 127);*/
 }
 
 
@@ -47,7 +52,7 @@ void opcontrol() {
 
     pros::Controller master(pros::E_CONTROLLER_MASTER);
 
-    smoothDriver.enableBraking(0.5, 0.5, pros::E_CONTROLLER_DIGITAL_A);
+    smoothDriver.enableBraking(1.0, 0.8, pros::E_CONTROLLER_DIGITAL_A);
     
     while(true){
         smoothDriver.startDriver();

@@ -98,7 +98,7 @@ void smoothDriver::drive(double pointX, double pointY, double speedMax){
 
     double distance = returnDist(pointX, pointY);
 
-    driveDist(distance, speedMax, 0.1);
+    driveDist(distance, speedMax);
 
 }
 
