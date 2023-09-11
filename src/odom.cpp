@@ -63,7 +63,7 @@ void smoothDriver::map(){
         if(Which){
             double leftEnc = getLeftDist();
             double rightEnc = getRightDist();
-            double theta = m_imu.get_heading();
+            double theta = mahony(m_imu.get_heading();)
 
             double changeL = leftEnc - lastDistL;
             double changeR =rightEnc - lastDistR;
