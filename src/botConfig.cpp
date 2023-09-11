@@ -1,18 +1,40 @@
 #include "botconfig.h"
 #include "pros/misc.h"
 #include <cmath>
+#include <cstdint>
 
 smoothDriver::smoothDriver(int inertialPort, pros::Motor& leftBack, pros::Motor& rightBack, pros::Motor& leftMid, pros::Motor& rightMid, pros::Motor& leftFront, pros::Motor& rightFront):
     m_leftMotorGroup({leftBack, leftMid, leftFront}),
     m_rightMotorGroup({rightBack, rightMid, rightFront}),
-    m_imu(inertialPort)
-    {}
+    m_imu(inertialPort),
+    leftEnc('A', 'B'),
+    rightEnc('c', 'd')
+    {encodersIn = false;}
 
 smoothDriver::smoothDriver(int inertialPort, pros::Motor& leftBack, pros::Motor& rightBack, pros::Motor& leftFront, pros::Motor& rightFront):
     m_leftMotorGroup({leftBack, leftFront}),
     m_rightMotorGroup({rightBack, rightFront}),
-    m_imu(inertialPort)
-    {}
+    m_imu(inertialPort),
+    leftEnc('A', 'B'),
+    rightEnc('c', 'd')
+    {encodersIn = false;}
+
+smoothDriver::smoothDriver(int inertialPort, pros::Motor& leftBack, pros::Motor& rightBack, pros::Motor& leftFront, pros::Motor& rightFront, std::uint8_t LEFT_TOP, std::uint8_t LEFT_BOTTOM, std::uint8_t RIGHT_TOP, std::uint8_t RIGHT_BOTTOM):
+    m_leftMotorGroup({leftBack, leftFront}),
+    m_rightMotorGroup({rightBack, rightFront}),
+    m_imu(inertialPort),
+    leftEnc(LEFT_TOP, LEFT_BOTTOM),
+    rightEnc(RIGHT_TOP, RIGHT_BOTTOM)
+    {encodersIn = true;}
+
+smoothDriver::smoothDriver(int inertialPort, pros::Motor& leftBack, pros::Motor& rightBack, pros::Motor& leftMid, pros::Motor& rightMid, pros::Motor& leftFront, pros::Motor& rightFront, std::uint8_t LEFT_TOP, std::uint8_t LEFT_BOTTOM, std::uint8_t RIGHT_TOP, std::uint8_t RIGHT_BOTTOM):
+    m_leftMotorGroup({leftBack, leftMid, leftFront}),
+    m_rightMotorGroup({rightBack, rightMid, rightFront}),
+    m_imu(inertialPort),
+    leftEnc(LEFT_TOP, LEFT_BOTTOM),
+    rightEnc(RIGHT_TOP, RIGHT_BOTTOM)
+    {encodersIn = true;}
+
 
 
 
@@ -165,29 +187,33 @@ int smoothDriver::curveDrive(int inputVal){
 }
 
 
-void smoothDriver::resetDrive(){
+void smoothDriver::resetDrive(){ 
+    //In order to tare and reset the sensors on the vehicl 
 
     pros::Controller master(pros::E_CONTROLLER_MASTER);
-    m_leftMotorGroup.tare_position(); 
+    m_leftMotorGroup.tare_position();
     m_rightMotorGroup.tare_position();
-    
+    //Resets position to 0
 
     if(m_imu.get_heading() == PROS_ERR_F){
-
-        master.print(1, 1, "IMU Not Connected");
+        
+        //Detects PROS_ERR_F --> faulty or not connected IMU
+        
+        master.print(1, 1, "IMU Not Connected"); //Message to Controller
         inertialIn = false;
 
     } else {
 
-        m_imu.reset();
+        m_imu.reset(); //Calibrates the IMU
 
         while(m_imu.is_calibrating()){
             master.print(1, 1, "SmoothDriver Calibrating");
             inertialIn = true;
         }
 
-        master.print(1, 1, "Ready To Drive");
-        pros::Task mapping(smoothDriver::mapperWrapper);
+        posX = 0; 
+        posY = 0;
+        master.print(1, 1, "Ready To Drive"); //Confirmation all is calibrated and tared
     }
     
 }
