@@ -73,9 +73,12 @@ void smoothDriver::startDriver(){
 
     pros::Controller master(pros::E_CONTROLLER_MASTER);
 
-    
+        
         if(master.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_Y) && curBreak == false){
+            
+            //Double checks if Braking, if Not, curves the input.
             m_rightMotorGroup.move(curveDrive(master.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_Y)));
+            
         } else {
             m_rightMotorGroup.move(0);
         }
@@ -87,10 +90,12 @@ void smoothDriver::startDriver(){
         }
 
         if(braking){
+            //Brake Function
             if(master.get_digital(brakeButton)){
-                curBreak = true;
+                curBreak = true; //Disables Input
                 double leftSide = m_leftMotorGroup[0].get_position();
-                double rightSide = m_rightMotorGroup[0].get_position();
+                double rightSide = m_rightMotorGroup[0].get_position(); 
+                //Gets current position and brakes.
 
 
                 brake(leftSide, rightSide);
@@ -125,37 +130,39 @@ void smoothDriver::drive(double pointX, double pointY, double speedMax){
 }
 
 void smoothDriver::brake(double in1, double in2){
-    
     if(resetBrakes){
+        //If Indicated, set the brake aim to the current position
         
         targetBrakeL = in1;
         targetBrakeR = in2;
-    }
+    } 
 
     m_leftMotorGroup.set_brake_modes(pros::E_MOTOR_BRAKE_BRAKE);
     m_rightMotorGroup.set_brake_modes(pros::E_MOTOR_BRAKE_BRAKE);
-    
+    //Setting brake mode to PROS BRAKE
 
     double targetL = targetBrakeL;
     double targetR = targetBrakeR;
-
     double currL = m_leftMotorGroup[0].get_position();
     double currR = m_rightMotorGroup[0].get_position();
+    //Current Position of the robot
 
     double errorL = targetL - currL;
     double errorR = targetR - currR;
-
+    //Error between the current and the position
+    
     double devL = errorL - brakePrevL;
     double devR = errorR - brakePrevR;
+    //derivative value
 
-    double finalLeftPow = (brakeP * errorL) + (brakeD * devL);
+    double finalLeftPow = (brakeP * errorL) + (brakeD * devL); //Calculation of power using error * KP + derivative * KD
     double finalRightPow = (brakeP * errorL) + (brakeD * devR);
 
     if(errorL > 50 || errorL < -50){
         m_leftMotorGroup.move(finalLeftPow);
     } else {
         m_leftMotorGroup.move(0);
-    }
+    } //Bands for a little adjustment
 
     if(errorR > 50 || errorR < -50){
         m_rightMotorGroup.move(finalRightPow);
@@ -167,18 +174,24 @@ void smoothDriver::brake(double in1, double in2){
     brakePrevR = errorR;
     m_leftMotorGroup.set_brake_modes(pros::E_MOTOR_BRAKE_COAST);
     m_rightMotorGroup.set_brake_modes(pros::E_MOTOR_BRAKE_COAST);
-    
+    //Reset to Coast
 }
 
 int smoothDriver::curveDrive(int inputVal){
+    //Define Variables
     int speed;
     int x;
+    
     if(inputVal >= 0){
+        
         x = inputVal;
+        speed = pow((1/(1+exp(-kCurve*(x-96)))), aCurve) *127; 
     } else if(inputVal <0){
+        //Flips the X value
         x = -inputVal;
+        speed = pow((1/(1+exp(-kCurve*(x-96)))), aCurve) *(-127); 
     }
-    speed = pow((1/(1+exp(-kCurve*(x-96)))), aCurve) *127; 
+    
 
     if(inputVal < 0){
         speed = -speed;
@@ -188,7 +201,7 @@ int smoothDriver::curveDrive(int inputVal){
 
 
 void smoothDriver::resetDrive(){ 
-    //In order to tare and reset the sensors on the vehicl 
+    //In order to tare and reset the sensors on the vehicle 
 
     pros::Controller master(pros::E_CONTROLLER_MASTER);
     m_leftMotorGroup.tare_position();
