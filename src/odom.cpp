@@ -96,10 +96,6 @@ void smoothDriver::map(){
         }
 
 
-
-
-        
-
         pros::screen::print(pros::E_TEXT_MEDIUM, 2, "XPos:%3d", posX);
         pros::screen::print(pros::E_TEXT_MEDIUM, 4, "Ypos: %3d", posY);
     }
