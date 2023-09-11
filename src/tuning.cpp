@@ -73,10 +73,17 @@ void smoothDriver::runPIDTune(double stepCount){
 
             if(tError < 100 && finalPow < 10){
                 tP += stepCount;
+                countTimeout = 0;
+                oscillationCount = 0;
+                timeOf = 0;
 
                 target+=300;
             } else if (finalPow < 10) {
                 tP += stepCount;
+                countTimeout = 0;
+                oscillationCount = 0;
+                timeOf = 0;
+
 
             }
 
